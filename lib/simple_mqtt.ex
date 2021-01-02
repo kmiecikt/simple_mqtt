@@ -28,13 +28,18 @@ defmodule SimpleMqtt do
   ## Examples
 
   In the following example, the current process subscribes to two topic filters:
+
+    ```
     {:ok, pid} = SimpleMqtt.start_link()
     :ok = SimpleMqtt.subscribe(pid, ["things/sensor_1/+", "things/sensor_2/+"])
+    ```
 
   If the process needs to monitor one more topic filter, it can call `subscribe` again. After this call, the current process
   will be subscribed to three topic filters.
 
+    ```
     :ok = SimpleMqtt.subscribe(pid, ["things/sensor_3/+"])
+    ```
 
   """
   @spec subscribe(pid(), [topic_filter()]) :: :ok
@@ -52,15 +57,19 @@ defmodule SimpleMqtt do
   and then unsubscribes from the second one. It will still receive messages published to a topic that matches the first
   filter.
 
+    ```
     {:ok, pid} = SimpleMqtt.start_link()
     :ok = SimpleMqtt.subscribe(pid, ["things/sensor_1/+", "things/sensor_2/+"])
     :ok = SimpleMqtt.unsubscribe(pid, ["things/sensor_2/+"])
+    ```
 
   In the second example, the current process unsubscribes from all topics. It will no longer receive any messages.
 
+    ```
     {:ok, pid} = SimpleMqtt.start_link()
     :ok = SimpleMqtt.subscribe(pid, ["things/sensor_1/+", "things/sensor_2/+"])
     :ok = SimpleMqtt.unsubscribe(pid, :all)
+    ```
   """
   @spec unsubscribe(pid(), [topic_filter()] | :all) :: :ok
   def unsubscribe(pid, topics) do
@@ -73,8 +82,10 @@ defmodule SimpleMqtt do
 
   ## Examples
 
+    ```
     {:ok, pid} = SimpleMqtt.start_link()
     :ok = SimpleMqtt.publish(pid, "things/sensor_1/temperature", "34.5")
+    ```
   """
   @spec publish(pid(), topic(), payload()) :: :ok
   def publish(pid, topic, payload) do
