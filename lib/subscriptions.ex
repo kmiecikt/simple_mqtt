@@ -32,7 +32,7 @@ defmodule SimpleMqtt.Subscriptions do
   @doc """
   Removes topics from the subscription.
   """
-  @spec unsubscribe(subscriptions(), pid(), [String.t()]) :: :error | {:empty, subscriptions()} | {:not_empty, subscriptions()}
+  @spec unsubscribe(subscriptions(), pid(), [String.t()] | :all) :: :error | {:empty, subscriptions()} | {:not_empty, subscriptions()}
   def unsubscribe(subscriptions, pid, :all) do
     {:empty, Map.delete(subscriptions, pid)}
   end

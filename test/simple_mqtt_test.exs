@@ -17,7 +17,20 @@ defmodule SimpleMqttTest do
     refute_receive({:simple_mqtt, "things/a/on", }, 10)
   end
 
-  test "Simple MQTT unregisters crashed procsses" do
-    assert False == True
+  test "Simple MQTT does not link to subscribers" do
+    {:ok, pid} = SimpleMqtt.start_link()
+    subscriber_pid = spawn(fn ->
+        :ok = SimpleMqtt.subscribe(pid, ["things/a/+"])
+        receive do
+           _ -> nil
+        end
+      end)
+
+    Process.sleep(10)
+    Process.exit(subscriber_pid, :kill)
+    Process.sleep(10)
+
+    assert Process.alive?(subscriber_pid) == false
+    assert Process.alive?(pid) == true
   end
 end

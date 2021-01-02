@@ -22,7 +22,7 @@ defmodule SimpleMqtt.SubscriptionsTest do
     assert Subscriptions.list_matched(subscriptions, "things/b/on") == [:c.pid(0, 1, 0)]
     assert Subscriptions.list_matched(subscriptions, "things/a/on") == []
 
-    assert {:empty, subscriptions} = Subscriptions.unsubscribe(subscriptions, :c.pid(0, 1, 0), ["things/b/+"])
+    assert {:empty, _} = Subscriptions.unsubscribe(subscriptions, :c.pid(0, 1, 0), ["things/b/+"])
   end
 
   test "Unsubscribe :all removes items" do
